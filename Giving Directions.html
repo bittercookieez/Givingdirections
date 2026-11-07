@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Giving Directions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#073b4c;--card:#ffffff;--o:#ff7a1a;--y:#ffe14d;--t:#00b4d8;--bg:linear-gradient(#38bdf8,#22d3ee 50%,#4ade80);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#eafcff;--card:#12343f;--bg:linear-gradient(#0c4a6e,#115e59 60%,#14532d)}}
+:root[data-theme="dark"]{--ink:#eafcff;--card:#12343f;--bg:linear-gradient(#0c4a6e,#115e59 60%,#14532d)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0}
+body{font-family:"Baloo 2","Trebuchet MS",system-ui,sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+#app{height:100%;display:flex;flex-direction:column;position:relative;z-index:1}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.cl{position:absolute;font-size:70px;opacity:.55;animation:mv 60s linear infinite}
+.st{position:absolute;font-size:26px;opacity:.5;animation:fl 6s ease-in-out infinite}
+@keyframes mv{from{transform:translateX(-120px)}to{transform:translateX(110vw)}}
+@keyframes fl{50%{transform:translateY(-14px) rotate(15deg)}}
+@media(prefers-reduced-motion:reduce){.cl,.st,.bob{animation:none}}
+nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:10px}
+nav button{font:700 clamp(15px,1.6vw,20px) inherit;font-family:inherit;border:3px solid var(--t);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 16px;cursor:pointer}
+nav button.on{background:var(--o);border-color:#c2410c;color:#fff}
+main{flex:1;overflow:auto;padding:8px clamp(12px,4vw,48px)}
+.s{display:none;max-width:1200px;margin:auto}.s.on{display:block}
+h1{font-size:clamp(38px,6vw,64px);margin:4px 0;line-height:1}
+h2{font-size:clamp(30px,4.2vw,44px);margin:4px 0 10px;text-align:center}
+.sub{font-size:clamp(22px,2.6vw,30px);text-align:center;margin:4px}
+.c{background:var(--card);border:4px solid var(--t);border-radius:24px;padding:14px 18px}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.c h3{font-size:clamp(28px,3.2vw,38px);margin:4px 0;color:var(--o)}
+.c svg{width:100%;max-height:210px;background:#86efac;border-radius:16px}#s7 svg{max-height:260px}
+.cap{font-weight:800;font-size:clamp(20px,2.2vw,26px);text-align:center;margin:6px 0 0}
+.noid .sp[data-l=id]{display:none}
+.tw{display:flex;gap:clamp(10px,2.4vw,28px);justify-content:center;flex-wrap:wrap}.tw div{display:flex;flex-direction:column;align-items:center;font-size:clamp(40px,6vw,68px);line-height:1.1}.tw b{font-size:clamp(18px,2vw,24px)}
+.sc{display:flex;gap:10px;align-items:flex-end;justify-content:center;flex-wrap:wrap;margin:10px 0}.ch{display:flex;flex-direction:column;align-items:center;text-align:center;max-width:300px}.ch .bub{margin:0 0 4px}.fig{font-size:clamp(56px,7vw,84px);line-height:1}.ch b{font-size:clamp(18px,2vw,24px)}
+.lg{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:6px 0}.lg span{background:var(--y);color:#3b2f00;border-radius:999px;padding:2px 14px;font-weight:800;font-size:clamp(18px,2vw,24px)}
+#s7 .g{grid-template-columns:1fr 1fr;align-items:start}@media(max-width:760px){#s7 .g{grid-template-columns:1fr}}
+textarea{width:100%;box-sizing:border-box;font:600 clamp(19px,2vw,24px) inherit;font-family:inherit;border:3px solid var(--t);border-radius:14px;padding:8px 12px;background:#fff;color:#073b4c;margin:0 0 10px;resize:vertical}
+#dn{display:none}#tts.dlg #dn{display:inline}#tts.dlg [data-v],#tts.dlg #vl{display:none}
+.ex{font-size:clamp(22px,2.4vw,28px);font-weight:700;margin:6px 0 0}
+.m{font-size:clamp(19px,2vw,24px);margin:2px 0 6px;opacity:.9}
+.big{font-size:clamp(22px,2.6vw,30px)}
+.sp{font:700 16px inherit;font-family:inherit;margin-left:6px;border:2px solid var(--t);background:var(--y);color:#3b2f00;border-radius:999px;padding:2px 10px;cursor:pointer;vertical-align:middle}
+.sp:active{transform:scale(.95)}
+.hero{text-align:center}
+.town{font-size:clamp(40px,7vw,76px);letter-spacing:6px}
+.bob{display:inline-block;animation:fl 4s ease-in-out infinite}
+.btn{display:inline-block;font:800 clamp(22px,2.6vw,32px) inherit;font-family:inherit;background:var(--o);color:#fff;border:4px solid #c2410c;border-radius:999px;padding:10px 34px;cursor:pointer;text-decoration:none;box-shadow:0 6px 0 #c2410c}
+.btn.big2{font-size:clamp(26px,3.6vw,42px);padding:16px 40px;background:#22c55e;border-color:#15803d;box-shadow:0 6px 0 #15803d}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
+.ol{list-style:none;padding:0;display:grid;gap:10px}
+.ol li{display:flex;gap:14px;align-items:center;font-size:clamp(22px,2.6vw,30px);background:var(--card);border:4px solid var(--t);border-radius:20px;padding:8px 16px}
+.ol i{font-style:normal;font-size:44px}
+mark{background:var(--y);color:#3b2f00;border-radius:8px;padding:0 6px}
+.bub{border-radius:22px;padding:10px 16px;margin:8px 0;font-size:clamp(22px,2.4vw,28px);max-width:92%}
+.ba{background:#bae6fd;color:#0b3a4a;border:3px solid #0284c7}
+.bb{background:#fed7aa;color:#431407;border:3px solid #ea580c;margin-left:auto}
+.bub small{display:block;font-size:clamp(18px,1.9vw,22px);opacity:.85}
+.pk{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.pk button{font:700 clamp(20px,2.4vw,28px) inherit;font-family:inherit;border:4px solid var(--t);background:var(--card);color:var(--ink);border-radius:20px;padding:10px 18px;cursor:pointer}
+.pk button.on{background:var(--y);color:#3b2f00;border-color:var(--o)}
+footer{padding:8px 10px;background:color-mix(in srgb,var(--card) 90%,transparent);border-top:4px solid var(--t)}
+#tts{display:none;justify-content:center;gap:8px;flex-wrap:wrap;align-items:center;font-size:18px;margin-bottom:8px}
+#tts.on{display:flex}
+#tts button{font:700 17px inherit;font-family:inherit;border:2px solid var(--t);background:var(--card);color:var(--ink);border-radius:999px;padding:3px 12px;cursor:pointer}
+#tts button.on{background:var(--o);color:#fff}
+#note{font-size:16px;text-align:center;display:none}
+.fb{display:flex;gap:10px;justify-content:center}
+.fb .btn{font-size:clamp(18px,2vw,24px);padding:6px 24px}
+.fb .btn:disabled{opacity:.4;cursor:default}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs><marker id="h" markerWidth="4" markerHeight="4" refX="2" refY="2" orient="auto"><path d="M0 0L4 2L0 4z" fill="#f97316"/></marker></defs></svg>
+<div id="fx"><span class="cl" style="top:8%;animation-delay:-5s">☁️</span><span class="cl" style="top:30%;animation-delay:-30s;font-size:50px">☁️</span><span class="cl" style="top:62%;animation-delay:-48s">☁️</span><span class="st" style="top:15%;left:12%">⭐</span><span class="st" style="top:50%;left:88%;animation-delay:-2s">⭐</span><span class="st" style="top:75%;left:6%;animation-delay:-4s">🍃</span><span class="st" style="top:22%;left:70%;animation-delay:-3s">🍃</span></div>
+<div id="app">
+<nav id="menu"><button data-i="0">HOME</button><button data-i="1">LEARNING OUTCOMES</button><button data-i="2">MATERIAL</button><button data-i="8">ACTIVITY</button><button data-i="9">REFLECTION</button></nav>
+<main id="main">
+
+<section class="s hero" id="s0">
+<div class="tw"><div><span class="bob">🏫</span><b>School</b></div><div><span class="bob">📚</span><b>Library</b></div><div><span class="bob">🌳</span><b>Park</b></div><div><span class="bob">🏥</span><b>Hospital</b></div><div><span class="bob">🥐</span><b>Bakery</b></div><div><span class="bob">🕌</span><b>Mosque</b></div></div>
+<h1>GIVING DIRECTIONS</h1>
+<p class="sub">How to Ask for and Give Directions</p>
+<div style="font-size:80px">🧒🏻🗺️</div>
+<p><button class="btn big2" data-go="1">▶ START</button></p>
+<p class="big"><b>Prepared by:</b><br>Labaika Muhammad Rayesh (2410520003)<br>Atikah Ifatunnisa (2410520006)</p>
+</section>
+
+<section class="s" id="s1">
+<h2>WHAT WILL WE LEARN TODAY?</h2>
+<p class="sub">By the end of this lesson, you can:</p>
+<ul class="ol">
+<li><i>🧭</i>Understand common direction words.</li>
+<li><i>⬆️</i>Know the basic directions: go straight, turn left, turn right.</li>
+<li><i>📍</i>Understand words that describe locations.</li>
+<li><i>🙋</i>Use polite words to ask for directions.</li>
+<li><i>🗣️</i>Understand simple ways to give directions.</li>
+</ul>
+</section>
+
+<section class="s" id="s2">
+<h2>WHAT ARE GIVING DIRECTIONS?</h2>
+<div class="c big" style="text-align:center">
+Giving directions means telling someone how to get to a place.
+<button class="sp" data-l="en" data-t="Giving directions means telling someone how to get to a place.">🔊 EN</button>
+<p class="m">Memberi petunjuk arah berarti memberi tahu seseorang cara menuju suatu tempat.
+<button class="sp" data-l="id" data-t="Memberi petunjuk arah berarti memberi tahu seseorang cara menuju suatu tempat.">🔊 ID</button></p>
+<div class="sc"><div class="ch"><div class="bub ba">Where is the library?</div><div class="fig bob">👦🏻</div></div><div class="ch"><div class="bub bb">The library is that way! 👉<button class="sp" data-l="en" data-t="The library is that way!" data-r="b">🔊 EN</button></div><div class="fig bob">🧕🏻</div></div><div class="ch"><div class="fig">📚</div><b>Library</b></div></div>
+
+</div>
+<div class="g" style="margin-top:14px">
+<div class="c"><h3>Asking for Directions <button class="sp" data-l="en" data-t="Asking for directions">🔊 EN</button></h3><p class="m">Meminta petunjuk arah. <button class="sp" data-l="id" data-t="Meminta petunjuk arah">🔊 ID</button></p></div>
+<div class="c"><h3>Giving Directions <button class="sp" data-l="en" data-t="Giving directions">🔊 EN</button></h3><p class="m">Memberikan petunjuk arah. <button class="sp" data-l="id" data-t="Memberikan petunjuk arah">🔊 ID</button></p></div>
+</div>
+</section>
+
+<section class="s" id="s3"><h2>GO STRAIGHT, TURN LEFT, TURN RIGHT</h2><div class="g" id="g3"></div></section>
+<section class="s" id="s4"><h2>WHERE IS THE PLACE?</h2><div class="g" id="g4"></div></section>
+<section class="s" id="s5"><h2>MORE WAYS TO GIVE DIRECTIONS</h2><div class="g" id="g5"></div></section>
+
+<section class="s" id="s6">
+<h2>HOW TO ASK FOR DIRECTIONS</h2>
+<div class="g">
+<div class="c">
+<div class="town"><span class="bob">🧕🏻</span>💬<span class="bob">👦🏻</span></div>
+<p class="big"><mark>EXCUSE ME</mark> <button class="sp" data-l="en" data-t="Excuse me">🔊 EN</button></p>
+<p class="m">We use “Excuse me” to get someone’s attention politely. <button class="sp" data-l="en" data-t="We use Excuse me to get someone's attention politely.">🔊 EN</button></p>
+<p class="m">Kita menggunakan “Excuse me” untuk menarik perhatian seseorang dengan sopan. <button class="sp" data-l="id" data-t="Kita menggunakan Excuse me untuk menarik perhatian seseorang dengan sopan.">🔊 ID</button></p>
+</div>
+<div class="c" id="q"></div>
+</div>
+</section>
+
+<section class="s" id="s7">
+<h2>HOW TO GIVE DIRECTIONS</h2>
+<div class="g">
+<div class="c">
+<svg viewBox="0 0 300 200"><rect x="125" y="60" width="50" height="140" fill="#64748b"/><rect x="30" y="60" width="145" height="50" fill="#64748b"/>
+<path d="M150 185V85H60" stroke="#f97316" stroke-width="8" fill="none" marker-end="url(#h)"/>
+<text x="180" y="75" font-size="38">🌳</text><text x="25" y="52" font-size="36">📚</text><text x="70" y="52" font-size="36">🥐</text>
+<text x="108" y="198" font-size="30">🧒🏻</text><text x="182" y="192" font-size="16" fill="#0b3a4a" font-weight="700">START</text><text x="20" y="132" font-size="16" fill="#0b3a4a" font-weight="700">GOAL: library</text></svg>
+<p class="cap">Library 📚 · Bakery 🥐 · Park 🌳</p><div class="lg"><span>⬆️ Go straight</span><span>⬅️ Turn left</span><span>↔️ Next to</span></div><p class="m">Route: go straight, then turn left at the park. The library is next to the bakery.</p>
+</div>
+<div class="c" id="d"></div>
+</div>
+</section>
+
+<section class="s hero" id="s8">
+<h2>YOU’RE READY, EXPLORER!</h2>
+<p class="sub">Time to put your knowledge into action!</p>
+<div class="town"><span class="bob">🧒🏻🗺️</span> 🏫 🌳 🏥 ✨ 🪙 💰</div>
+<p class="big">You’ve learned how to give directions.<br>Now, let’s find the treasure!</p>
+<p><a class="btn big2" href="https://pelican-r9z85x.my.canva.site/the-little-explorer" target="_blank" rel="noopener">🎮 PLAY THE GREAT TREASURE HUNT!</a></p>
+<p class="sub">Click the button and start your adventure!</p>
+</section>
+
+<section class="s hero" id="s9">
+<h2>LET’S REFLECT!</h2>
+<div class="town" style="font-size:56px"><span class="bob">👦🏻</span><span class="bob">🧕🏻</span><span class="bob">🧒🏻</span></div>
+<div class="c big" style="text-align:left">
+<p>1. What new expressions did you learn today?</p><textarea id="r1" rows="2" placeholder="Write your answer here. (Tulis jawabanmu di sini.)"></textarea>
+<p>2. Which direction is the easiest for you to understand?</p><textarea id="r2" rows="2" placeholder="Write your answer here. (Tulis jawabanmu di sini.)"></textarea>
+<p>3. Can you now ask for and give directions in English?</p><textarea id="r3" rows="2" placeholder="Write your answer here. (Tulis jawabanmu di sini.)"></textarea>
+</div>
+<p class="sub" style="margin-top:14px">How do you feel?</p>
+<div class="pk" id="pk"><button data-m="Great job! You are a real explorer!">😊 I CAN DO IT!</button><button data-m="Nice! Keep going. You are almost there!">🙂 I’M GETTING THERE!</button><button data-m="That is okay! Practice makes perfect. Try the game again!">🤔 I NEED MORE PRACTICE!</button></div>
+<p class="sub" id="msg" style="min-height:44px"></p>
+</section>
+
+<section class="s hero" id="s10">
+<h1>GREAT JOB, EXPLORERS!</h1>
+<div class="town"><span class="bob">🧒🏻</span>🧰💰🪙🪙🪙</div>
+<p class="sub">Thank you for learning with us!</p>
+<p class="sub">Keep practicing your English and exploring the world!</p>
+<p><button class="btn" data-go="0">🏠 HOME</button></p>
+</section>
+</main>
+<footer>
+<div id="tts"><span id="vl">Voice:</span><span id="dn">Each student has a different voice.</span><button data-v="m">👨 Adult male</button><button data-v="f" class="on">👩 Adult female</button><button data-v="c">🧒 Child</button><button id="pz">⏸ Pause</button><button id="rp">🔁 Replay</button></div>
+<div id="note"></div>
+<div class="fb"><button class="btn" data-go="0">🏠 HOME</button><button class="btn" id="bk">◀ BACK</button><button class="btn" id="nx">NEXT ▶</button></div>
+</footer>
+</div>
+<script>
+var N=['home','outcomes','what','basic','location','more','ask','give','activity','reflection','thanks'],cur=0,$=function(s){return document.querySelector(s)},all=function(s){return[].slice.call(document.querySelectorAll(s))};
+var sec=all('.s'),mb=all('#menu button');
+var D0='<rect x="75" width="50" height="150" fill="#64748b"/>',AR=function(p){return '<path d="'+p+'" stroke="#f97316" stroke-width="8" fill="none" marker-end="url(#h)"/>'};
+function sv(h,v){return '<svg viewBox="0 0 200 '+(v||150)+'">'+h+'</svg>'}
+var V={
+st:sv(D0+AR('M100 140V35')+'<text x="140" y="60" font-size="34">🌳</text>'),
+lf:sv(D0+'<rect y="35" width="125" height="50" fill="#64748b"/>'+AR('M100 140V70H40')+'<text x="8" y="28" font-size="34">🏫</text>'),
+rt:sv(D0+'<rect x="75" y="35" width="125" height="50" fill="#64748b"/>'+AR('M100 140V70H160')+'<text x="155" y="28" font-size="34">🏥</text>'),
+nx:sv('<rect y="100" width="200" height="50" fill="#64748b"/><text x="25" y="95" font-size="56">📚</text><text x="115" y="95" font-size="56">🌳</text><text x="85" y="70" font-size="30">↔️</text>'),
+op:sv('<rect y="60" width="200" height="45" fill="#64748b"/><rect x="10" y="80" width="30" height="5" fill="#fff"/><rect x="80" y="80" width="30" height="5" fill="#fff"/><rect x="150" y="80" width="30" height="5" fill="#fff"/><text x="75" y="52" font-size="48">🏥</text><text x="75" y="150" font-size="48">🏫</text>',160),
+bt:sv('<rect y="100" width="200" height="50" fill="#64748b"/><rect x="62" y="22" width="70" height="78" rx="12" fill="none" stroke="#f97316" stroke-width="5"/><text x="2" y="90" font-size="50">🏫</text><text x="72" y="90" font-size="50">📚</text><text x="142" y="90" font-size="50">🥐</text>'),
+gp:sv('<rect y="60" width="200" height="40" fill="#64748b"/>'+AR('M10 80H185')+'<text x="75" y="52" font-size="44">🌳</text><text x="2" y="130" font-size="30">🧒🏻</text>'),
+cn:sv(D0+'<rect y="35" width="125" height="50" fill="#64748b"/><circle cx="100" cy="60" r="14" fill="none" stroke="#fcd34d" stroke-width="5"/>'+AR('M100 140V70H40')+'<text x="135" y="40" font-size="34">🕌</text>'),
+yl:sv(D0+'<text x="14" y="75" font-size="52">📚</text><text x="140" y="75" font-size="40">🌳</text><text x="84" y="125" font-size="34">🧒🏻</text>'+AR('M100 100V30')+'<text x="14" y="110" font-size="16" fill="#0b3a4a" font-weight="700">LEFT</text>')};
+var CP={st:'Park 🌳',lf:'School 🏫',rt:'Hospital 🏥',nx:'Library 📚 · Park 🌳',op:'Hospital 🏥 · School 🏫',bt:'School 🏫 · Library 📚 · Bakery 🥐',gp:'Park 🌳',cn:'Mosque 🕌',yl:'Library 📚 · Park 🌳'};for(var k in CP)V[k]+='<p class="cap">'+CP[k]+'</p>';
+function sp(l,t,r){return ' <button class="sp" data-l="'+l+'" data-t="'+t.replace(/"/g,'')+'"'+(r?' data-r="'+r+'"':'')+'>🔊 '+l.toUpperCase()+'</button>'}
+function card(v,en,id,ex,ei){return '<div class="c">'+v+'<h3>'+en+sp('en',en)+'</h3><p class="m">'+id+sp('id',id.replace(/\.$/,''))+'</p><p class="ex">“'+ex+'”'+sp('en',ex)+'</p><p class="m">'+ei+sp('id',ei)+'</p></div>'}
+$('#g3').innerHTML=card(V.st,'GO STRAIGHT','Jalan terus.','Go straight to the park.','Jalan terus ke taman.')+card(V.lf,'TURN LEFT','Belok kiri.','Turn left at the school.','Belok kiri di sekolah.')+card(V.rt,'TURN RIGHT','Belok kanan.','Turn right at the hospital.','Belok kanan di rumah sakit.');
+$('#g4').innerHTML=card(V.nx,'NEXT TO','Di sebelah.','The library is next to the park.','Perpustakaan ada di sebelah taman.')+card(V.op,'OPPOSITE','Di seberang.','The hospital is opposite the school.','Rumah sakit ada di seberang sekolah.')+card(V.bt,'BETWEEN','Di antara.','The library is between the school and the bakery.','Perpustakaan ada di antara sekolah dan toko roti.');
+$('#g5').innerHTML=card(V.gp,'GO PAST','Lewati.','Go past the park.','Lewati taman.')+card(V.cn,'AT THE CORNER','Di sudut jalan.','Turn left at the corner.','Belok kiri di sudut jalan.')+card(V.yl,'ON YOUR LEFT','Di sebelah kirimu.','The library is on your left.','Perpustakaan ada di sebelah kirimu.');
+var Q=[['Excuse me, where is the library?','Permisi, di mana perpustakaan?'],['How can I get to the park?','Bagaimana cara menuju taman?'],['Can you tell me the way to the hospital?','Bisakah Anda memberi tahu saya jalan menuju rumah sakit?']];
+$('#q').innerHTML='<h3>Polite questions</h3>'+Q.map(function(x,i){return '<p class="ex">'+(i+1)+'. “'+x[0]+'”'+sp('en',x[0])+'</p><p class="m">'+x[1]+sp('id',x[1])+'</p>'}).join('');
+var DL=[['a','Student A 🐰','Excuse me, how can I get to the library?','Permisi, bagaimana cara saya menuju perpustakaan?'],['b','Student B 🦊','<mark>Go straight</mark> and <mark>turn left</mark> at the park. The library is <mark>next to</mark> the bakery.','Jalan terus dan belok kiri di taman. Perpustakaan ada di sebelah toko roti.'],['a','Student A 🐰','Thank you!','Terima kasih!'],['b','Student B 🦊','You’re welcome!','Sama-sama!']];
+$('#d').innerHTML=DL.map(function(x){var p=x[2].replace(/<[^>]+>/g,'');return '<div class="bub b'+x[0]+'"><b>'+x[1].replace('🐰','🧕🏻').replace('🦊','👦🏻')+'</b><br>'+x[2]+sp('en',p,x[0])+'<small>'+x[3]+sp('id',x[3],x[0])+'</small></div>'}).join('');
+
+/* navigation */
+function go(i){cur=Math.max(0,Math.min(N.length-1,i));sec.forEach(function(s,k){s.classList.toggle('on',k===cur)});
+var a=cur===0?0:cur===1?1:cur<=7?2:cur===8?8:9;mb.forEach(function(b){b.classList.toggle('on',+b.dataset.i===a)});
+$('#tts').classList.toggle('on',cur>=2&&cur<=7&&!!window.speechSynthesis);$('#tts').classList.toggle('dlg',cur===7);$('#note').style.display=(cur>=2&&cur<=7&&$('#note').textContent)?'block':'none';
+$('#bk').disabled=cur===0;$('#nx').disabled=cur===N.length-1;$('#main').scrollTop=0;stop();
+try{if(location.hash!=='#'+N[cur])history.replaceState(null,'','#'+N[cur])}catch(e){}}
+mb.forEach(function(b){b.onclick=function(){go(+b.dataset.i)}});
+all('[data-go]').forEach(function(b){b.onclick=function(){go(+b.dataset.go)}});
+$('#bk').onclick=function(){go(cur-1)};$('#nx').onclick=function(){go(cur+1)};
+document.addEventListener('keydown',function(e){if(/TEXTAREA|INPUT/.test(e.target.tagName))return;if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
+function fromHash(){var i=N.indexOf(location.hash.slice(1));go(i<0?0:i)}
+window.addEventListener('hashchange',fromHash);
+all('#pk button').forEach(function(b){b.onclick=function(){all('#pk button').forEach(function(x){x.classList.remove('on')});b.classList.add('on');$('#msg').textContent=b.dataset.m}});
+
+/* text to speech */
+var ss=window.speechSynthesis,vs=[],style='f',last=null;
+function stop(){if(ss){ss.cancel();$('#pz').textContent='⏸ Pause'}}
+var isM=function(v){return(/male/i.test(v.name)&&!/female/i.test(v.name))||/david|daniel|james|george|mark|guy|fred|alex|thomas|ryan|andika|ardi|rishi|arthur/i.test(v.name)};
+var isF=function(v){return!isM(v)&&/female|zira|samantha|susan|hazel|karen|victoria|aria|jenny|libby|damayanti|gadis|moira|tessa|sonia|google/i.test(v.name)};
+function pool(l){return vs.filter(function(v){return v.lang.toLowerCase().indexOf(l)===0})}
+function pick(l,st){var L=pool(l);if(!L.length)return null;var m=L.filter(isM)[0],f=L.filter(isF)[0]||L.filter(function(v){return!isM(v)})[0]||L[0];return st==='m'?{v:m||f,real:!!m}:{v:f,real:true}}
+function speak(t,l,r,nv){if(!ss)return;ss.cancel();last=[t,l,r];var st=r==='a'?'f':r==='b'?'m':style,u=new SpeechSynthesisUtterance(t),p=nv?null:pick(l,st);u.lang=l==='en'?'en-US':'id-ID';u.onerror=function(e){if(p&&p.v&&e.error!=='canceled'&&e.error!=='interrupted')speak(t,l,r,1)};
+if(p&&p.v){u.voice=p.v;u.lang=p.v.lang}u.rate=.85;u.pitch=st==='c'?1.6:st==='m'?(p&&p.real?.9:.6):(r==='a'?1.2:1.05);setTimeout(function(){ss.speak(u)},80);$('#pz').textContent='⏸ Pause'}
+function setup(){vs=ss.getVoices();var en=pool('en').length>0,id=pool('id').length>0;
+document.body.classList.toggle('noid',!id);var n=$('#note');
+n.textContent=!en?'English voice not listed on this device. The device default voice is used for English audio.':!id?'Indonesian voice not found on this device, so Indonesian audio buttons are hidden. English audio works.':'';
+
+go(cur)}
+if(ss){ss.onvoiceschanged=setup;setup()}else{all('.sp').forEach(function(b){b.style.display='none'});$('#note').textContent='This browser has no text-to-speech support, so audio buttons are hidden.'}
+document.addEventListener('click',function(e){var b=e.target.closest('.sp');if(b)speak(b.dataset.t,b.dataset.l,b.dataset.r)});
+all('#tts [data-v]').forEach(function(b){b.onclick=function(){style=b.dataset.v;all('#tts [data-v]').forEach(function(x){x.classList.toggle('on',x===b)});if(last&&!last[2])speak(last[0],last[1])}});
+$('#pz').onclick=function(){if(!ss)return;if(ss.paused){ss.resume();this.textContent='⏸ Pause'}else if(ss.speaking){ss.pause();this.textContent='▶ Resume'}};
+$('#rp').onclick=function(){if(last)speak(last[0],last[1],last[2])};
+fromHash();
+</script></body></html>
